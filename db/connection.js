@@ -1,3 +1,6 @@
+import mongoose from "mongoose";
+
+
 const connectDB = async () => {
   try {
     const mongoURI = "mongodb://127.0.0.1:27017/gocode-shop";
@@ -10,3 +13,5 @@ const connectDB = async () => {
     process.exit(1); // Stop the app if connection fails
   }
 };
+
+export default connectDB;

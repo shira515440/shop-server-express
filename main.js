@@ -1,21 +1,19 @@
 import express from "express";
-import mongoose from "mongoose";
 import cors from "cors";
-const port = 3000;
+import connectDB from "./db/connection.js"; // הנתיב לחיבור ה-DB
+import productRouter from "./routes/productRoutes.js"; // הראוטר שיצרנו
+
 const app = express();
+const port = 3000;
 
-
-
+// הגדרות בסיסיות
+app.use(cors());
 app.use(express.json());
 
+// חיבור הראוטר הראשי
+app.use("/", productRouter);
 
-const Product = mongoose.model("Product", productSchema);
-app.use(cors())
-app.use(express.json());
-
-
-
-
+// פונקציית הפעלה
 const startServer = async () => {
   await connectDB();
   app.listen(port, () => {
@@ -23,10 +21,7 @@ const startServer = async () => {
   });
 };
 
-
-
 startServer();
-
 
 
 
