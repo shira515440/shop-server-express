@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 const connectDB = async () => {
   try {
-    const mongoURI = "mongodb://127.0.0.1:27017/gocode-shop";
+    const mongoURI = process.env.MONGO_URI;
 
     await mongoose.connect(mongoURI);
 
