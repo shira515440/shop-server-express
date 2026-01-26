@@ -9,11 +9,12 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3001;
+//const port = "https://shop-server-express.onrender.com"
 app.use(cors());
 app.use(express.json());
 
-app.use("/", productRouter);
-app.use("/users", userRouter);
+app.use("/api", productRouter);
+app.use("/api/users", userRouter);
 
 
 const startServer = async () => {
