@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs"; 
+import jwt from "jsonwebtoken";
 
 const hashPassword = (password) => {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
@@ -15,9 +16,16 @@ export const registerUserService = async (userData) => {
 export const loginUserService = async (email, password) => {
     const user = await User.findOne({ email });
     if (!user) throw new Error("no user found");
+
     const isMatching = bcrypt.compareSync(password, user.password);
     if (!isMatching) throw new Error("wrong password");
-    return user; 
+
+    // יצירת הטוקן
+    const payload = { id: user.id, role: user.role };
+    
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+    return { user, token }; 
 };
 
 export const changeUserPasswordService = async (id, oldPassword, newPassword) => {

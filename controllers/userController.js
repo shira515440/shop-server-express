@@ -55,7 +55,7 @@ export const createUserController = async (req, res) => {
 
 export const insertAllUsersDataController = async (req, res) => {
     try {
-        const rawData = fs.readFileSync("./users.json", "utf-8"); // שיניתי ל-users.json
+        const rawData = fs.readFileSync("./users.json", "utf-8"); 
         const initialUsers = JSON.parse(rawData);
         const inserted = await insertAllUsersDataService(initialUsers);
         res.status(201).json({ message: "Success", count: inserted.length });
@@ -76,13 +76,17 @@ export const deleteAllUsersDataController = async (req, res) => {
 export const loginUserController = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const user = await loginUserService(email, password);
-        res.status(200).json({ message: "Login successful", user });
+        const { user, token } = await loginUserService(email, password);
+        
+        res.status(200).json({ 
+            message: "Login successful", 
+            token: token, 
+            user: { firstName: user.firstName, role: user.role } 
+        });
     } catch (err) {
         res.status(401).send(err.message);
     }
 };
-
 export const changeUserPasswordController = async (req, res) => {
     try {
         const { id } = req.params;
